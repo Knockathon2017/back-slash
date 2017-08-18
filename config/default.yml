@@ -1,0 +1,6 @@
+default:
+  service:
+    SERVICEVERSION: v1
+    PORT: 8787
+    MONGODBURL: "mongodb://localhost:27017/knockthon"
+    LOGSENETOKEN: "e5d9ee73-7179-4c17-a5ab-aca21c66851d"

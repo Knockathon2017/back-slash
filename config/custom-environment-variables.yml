@@ -1,0 +1,5 @@
+default:
+  service:
+    PORT: "PORT"
+    MONGODBURL: "MONGO_URL"
+    LOGSENETOKEN: "LOGSENE_TOKEN"

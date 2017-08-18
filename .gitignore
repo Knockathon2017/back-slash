@@ -1,0 +1,10 @@
+
+node_modules/
+dist/
+.vscode/launch.json
+npm-debug.log
+.vscode
+local.yml
+file_uploaded/
+public
+views
