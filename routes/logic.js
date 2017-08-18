@@ -3,7 +3,11 @@ import Constants from '../utils/constants';
 
 import emailService from '../services/emailservice';
 import RegisterService from '../services/registerservice';
+
 import { witservice } from './serverboot';
+
+import FileUploadService from '../services/fileuploadservice';
+
 
 const fs = require('fs');
 const path = require('path');
@@ -35,10 +39,23 @@ module.exports.registerUser = (request, response) => {
 module.exports.uploadFile = (req, res) => {
     const files = req.files;
     if(files && files.length > 0){
-        console.log("-----------------------eshu------------------");
-        console.log(req.body.attributes)
-        req.log.info('File uploaded');
-        return res.status(200).json({data: "File uploaded"});
+        const endPointName = Constants.ENDPOINTS.UPLOADFILE;
+        const fileUploadService = new FileUploadService(req.log);
+        fileUploadService.insertFileInfo({
+            fileName: files[0].originalname, mimeType: files[0].mimetype,
+            category:(req.body.category && req.body.category != '')?req.body.category:""
+        })
+            .then((result) => {
+                req.log.info('File uploaded');
+                const finalResponse = res.formatResult(result.statusCode,
+                    result.data, endPointName);
+                req.log.info('record inserted successfully');
+                return res.status(finalResponse.status).json(finalResponse);
+            }).catch((err) => Util.logAndSendErrorResponse(req, res, err, endPointName));
+        //console.log(req.body.attributes)
+    }else{
+        const errorResponse = res.formatResult(400, {data:"Error in file uploading"}, endPointName);
+        return res.status(errorResponse.status).json(errorResponse);
     }
 }
 
@@ -57,6 +74,7 @@ module.exports.getFile = (req, res) => {
 }
 
 
+
 module.exports.wit = (req, res) => {
     const data = req.body;
     const message = data.message;
@@ -66,4 +84,16 @@ module.exports.wit = (req, res) => {
     }).catch(e => {
       console.error(e);
     })
+}
+
+module.exports.getFileInfo = (req, res) => {
+    const endPointName = Constants.ENDPOINTS.FILE_INFO;
+    const fileUploadService = new FileUploadService(req.log);
+    fileUploadService.getFileInfo({fileName: req.query.fileName, category:req.query.category})
+        .then((result) => {
+            const finalResponse = res.formatResult(result.statusCode,
+                result.data, endPointName);
+            req.log.info('record fetched successfully');
+            return res.status(finalResponse.status).json(finalResponse);
+        }).catch((err) => Util.logAndSendErrorResponse(req, res, err, endPointName));
 }

@@ -26,10 +26,7 @@ router.post('/uploadFile', upload.any(), routeLogic.uploadFile);
 
 router.get('/getFile/:fileName.:filextn',routeLogic.getFile);
 
-router.get('/location',(req,res)=>{
-    console.log('~~~~~~~~~~~~~~~~~eshu~~~~~~~~~~~~~~');
-    console.log(path.basename("/"))
-});
+router.get('/getFileInfo', routeLogic.getFileInfo);
 
 
 router.post('/context', routeLogic.wit);
