@@ -31,4 +31,7 @@ router.get('/location',(req,res)=>{
     console.log(path.basename("/"))
 });
 
+
+router.post('/context', routeLogic.wit);
+
 export default router;
