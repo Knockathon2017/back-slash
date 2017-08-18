@@ -39,6 +39,9 @@ import {Wit} from 'node-wit';
               tag == "";
           }else{
             const values = tag_type.map(o => o.value);
+            if(values.indexOf("profanity") != -1){
+              return {tag: "profanity"};
+            }
             if(values.indexOf("garbage") != -1){
               tag = "garbage"
             }else if(values.indexOf("road") != -1){
