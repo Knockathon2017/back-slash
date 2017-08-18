@@ -8,10 +8,7 @@ import { witservice } from './serverboot';
 
 import FileUploadService from '../services/fileuploadservice';
 
-<<<<<<< HEAD
 import DepartmentDetectionService from '../services/departmentDetectionService';
-=======
->>>>>>> 49379ae601729a84d3f0daf3e8d6edbd575862a5
 
 const fs = require('fs');
 const path = require('path');
@@ -149,7 +146,6 @@ module.exports.getFileInfo = (req, res) => {
             return res.status(finalResponse.status).json(finalResponse);
         }).catch((err) => Util.logAndSendErrorResponse(req, res, err, endPointName));
 }
-<<<<<<< HEAD
 
 module.exports.detect = (req,res) => {
     new DepartmentDetectionService(req.log).detectDepartment().then((response)=>{
@@ -158,5 +154,3 @@ module.exports.detect = (req,res) => {
         console.log("error----------------------------")
     });
 }
-=======
->>>>>>> 49379ae601729a84d3f0daf3e8d6edbd575862a5
