@@ -14,19 +14,23 @@ class FileUploadService {
 
     insertFileInfo(requestData){
         return new Promise((resolve, reject) => {
-            if (Util.isNullorEmpty(requestData.fileName)) {
+            /*if (Util.isNullorEmpty(requestData.fileName)) {
                 this.logger.warn(Constants.messages.FileNameNotEmpty);
                 return resolve({
                     statusCode: 400,
                     data: { error: Constants.messages.FileNameNotEmpty }
                 });
-            }
+            }*/
 
             this.logger.info('preparing db model for file info insert');
             const fileInfoObj = new FileInfoModel();
-            fileInfoObj.fileName = requestData.fileName;
-            fileInfoObj.mimeType = requestData.mimeType;
+            fileInfoObj.fileName = (requestData.fileName && requestData.fileName != "")? requestData.fileName:"";
+            fileInfoObj.mimeType = (requestData.mimeType && requestData.mimeType != "")?requestData.mimeType:"";
             fileInfoObj.category = requestData.category;
+            fileInfoObj.description = requestData.description;
+            fileInfoObj.tags = requestData.tags;
+            fileInfoObj.alarm = requestData.alarm;
+            fileInfoObj.time = requestData.time;
             if (fileInfoObj.validateSync()) {
                 this.logger.warn(Constants.messages.FileNameNotEmpty);
                 return resolve({
@@ -48,11 +52,24 @@ class FileUploadService {
         let queryData = {};
         let queryArray = [];
         for(let item in obj){
-            if(obj[item] && obj[item] != ""){
+            if(obj[item]){
                 let temp = {};
-                temp[item] = obj[item];
-                queryArray.push(temp);
-                //queryData[item]=obj[item];
+                if(item == "category"){
+                    if(obj[item] == Constants.ENUMS.C){
+                        const temp2 = {};
+                        temp2[item] = {$ne : ""};
+                        queryArray.push(temp2);
+                        temp[item] = {$ne : "grievances"};
+                    }else if(obj[item] == "uc"){
+                        temp[item] = "";
+                    }else{
+                        temp[item] = obj[item];
+                    }
+                    queryArray.push(temp);
+                }else if(obj[item] != ""){
+                    temp[item] = obj[item];
+                    queryArray.push(temp);
+                }
             }
         }
         if(queryArray.length > 1){
