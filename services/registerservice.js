@@ -13,7 +13,7 @@ class RegisterService {
     }
 
     
-    registerUser(requestData, loggedInUser) {
+    registerUser(requestData) {
         const email = Util.trim(requestData.email);
         return new Promise((resolve, reject) => {
             if (Util.isNullorEmpty(email)) {

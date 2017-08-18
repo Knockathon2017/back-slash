@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./dist/bootservice.js",
     "build": "babel . --ignore node_modules,dist --out-dir dist",
-    "dev": "./node_modules/.bin/babel-node bootservice.js",
+    "dev": "./node_modules/.bin/babel-node --inspect bootservice.js",
     "auto": "./node_modules/.bin/nodemon bootservice.js --exec ./node_modules/.bin/babel-node"
   },
   "author": "Eshu Goel",
