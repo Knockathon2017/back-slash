@@ -28,4 +28,7 @@ router.get('/getFile/:fileName.:filextn',routeLogic.getFile);
 
 router.get('/getFileInfo', routeLogic.getFileInfo);
 
+
+router.post('/context', routeLogic.wit);
+
 export default router;

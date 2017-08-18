@@ -3,7 +3,11 @@ import Constants from '../utils/constants';
 
 import emailService from '../services/emailservice';
 import RegisterService from '../services/registerservice';
+
+import { witservice } from './serverboot';
+
 import FileUploadService from '../services/fileuploadservice';
+
 
 const fs = require('fs');
 const path = require('path');
@@ -67,6 +71,19 @@ module.exports.getFile = (req, res) => {
     filestream.pipe(res);
 
     //res.download(file, "xyz.jpg"); // Set disposition and send it.
+}
+
+
+
+module.exports.wit = (req, res) => {
+    const data = req.body;
+    const message = data.message;
+    witservice.context(message)
+    .then(d => {
+      console.log(d)
+    }).catch(e => {
+      console.error(e);
+    })
 }
 
 module.exports.getFileInfo = (req, res) => {
