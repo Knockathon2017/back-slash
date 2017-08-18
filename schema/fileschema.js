@@ -4,8 +4,13 @@ const Schema = mongoose.Schema;
 
 const fileSchema = new Schema({
     fileName: {
-        type: String,
-        required: [true, 'File name is required.']
+        type: String
+    },
+    thumbnail: {
+        type: String
+    },
+    orignalFile: {
+        type: String
     },
     mimeType: {
         type: String
@@ -37,11 +42,11 @@ const fileSchema = new Schema({
     tags: {
         type: String
     },
-    alarmDate: {
-        type: Date
+    alarm: {
+        type: String
     },
-    localDate: {
-        type: Date
+    time: {
+        type: Number
     },
     metadata: {
         type: String

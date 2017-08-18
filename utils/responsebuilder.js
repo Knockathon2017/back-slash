@@ -23,7 +23,7 @@ class FormatResponse {
         return {
             status: statusCode,
             message: returnMsg,
-            result: finalResult
+            data: finalResult
         };
     }
 

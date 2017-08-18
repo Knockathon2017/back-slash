@@ -3,13 +3,20 @@ const constants = {
     {
         REGISTER: 'Register',
         UPLOADFILE: 'UploadFile',
-        FILE_INFO: 'FileInfo'
+        FILE_INFO: 'FileInfo',
+        TEXT_UPLOAD: "TextUpload"
     },
 
     messages: {
         EmailNotEmpty: "Email can't be empty.",
         EmailNotValid: "Email address is not valid. Please enter a valid email address.",
         FileNameNotEmpty: "File is required."
+    },
+
+    ENUMS: {
+        GC: "grievances",
+        UC: "uncategorized",
+        C: "categorized"
     }
 };
 
