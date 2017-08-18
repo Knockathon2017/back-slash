@@ -3,9 +3,15 @@ import Constants from '../utils/constants';
 
 import emailService from '../services/emailservice';
 import RegisterService from '../services/registerservice';
+
+import { witservice } from './serverboot';
+
 import FileUploadService from '../services/fileuploadservice';
 
+<<<<<<< HEAD
 import DepartmentDetectionService from '../services/departmentDetectionService';
+=======
+>>>>>>> 49379ae601729a84d3f0daf3e8d6edbd575862a5
 
 const fs = require('fs');
 const path = require('path');
@@ -115,6 +121,19 @@ module.exports.getFile = (req, res) => {
     //res.download(file, "xyz.jpg"); // Set disposition and send it.
 }
 
+
+
+module.exports.wit = (req, res) => {
+    const data = req.body;
+    const message = data.message;
+    witservice.context(message)
+    .then(d => {
+      console.log(d)
+    }).catch(e => {
+      console.error(e);
+    })
+}
+
 module.exports.getFileInfo = (req, res) => {
     const endPointName = Constants.ENDPOINTS.FILE_INFO;
     const fileUploadService = new FileUploadService(req.log);
@@ -130,6 +149,7 @@ module.exports.getFileInfo = (req, res) => {
             return res.status(finalResponse.status).json(finalResponse);
         }).catch((err) => Util.logAndSendErrorResponse(req, res, err, endPointName));
 }
+<<<<<<< HEAD
 
 module.exports.detect = (req,res) => {
     new DepartmentDetectionService(req.log).detectDepartment().then((response)=>{
@@ -138,3 +158,5 @@ module.exports.detect = (req,res) => {
         console.log("error----------------------------")
     });
 }
+=======
+>>>>>>> 49379ae601729a84d3f0daf3e8d6edbd575862a5

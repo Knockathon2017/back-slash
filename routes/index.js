@@ -32,4 +32,6 @@ router.get('/getFileInfo', routeLogic.getFileInfo);
 
 router.get('/detect', routeLogic.detect);
 
+router.post('/context', routeLogic.wit);
+
 export default router;
