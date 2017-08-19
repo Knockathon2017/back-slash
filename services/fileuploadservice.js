@@ -32,8 +32,8 @@ class FileUploadService {
             fileInfoObj.tags = requestData.tags;
             fileInfoObj.alarm = requestData.alarm;
             fileInfoObj.time = requestData.time;
-            fileInfoObj.thumbnail = (fileName)?"http://www.makeathumbnail.com/thumbnails/image590053.jpg":"";
-            fileInfoObj.orignalFile = (fileName)?`${global.settings.SERVICENAME}getFile/${fileName}`:"";
+            fileInfoObj.thumbnail = (fileName)?`${global.settings.SERVICENAME}getFile/thumb_images/${fileName}`:"";
+            fileInfoObj.orignalFile = (fileName)?`${global.settings.SERVICENAME}getFile/file_uploaded/${fileName}`:"";
             fileInfoObj.comMode = (requestData.comMode)?requestData.comMode:"";
             fileInfoObj.gMetadata = requestData.gMetadata;
             if (fileInfoObj.validateSync()) {
