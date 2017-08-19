@@ -56,6 +56,12 @@ const fileSchema = new Schema({
         type: String,
         default: "inprogress"
     },
+    comMode: {
+        type: String
+    },
+    gMetadata: {
+        type: Object
+    },
     createdDate: {
         type: Date,
         default: Date.now

@@ -3,7 +3,10 @@ import Constants from '../utils/constants';
 import Util from '../utils/helper';
 
 import DepartmentDetectionService from '../services/departmentDetectionService';
+import WitService from '../services/witservices'
 import TwitterServices from '../services/twitterservices';
+
+const witservice = new WitService(global.settings.WITTOKEN || 'BPQTQ7I45PX6BDVVSHZRW5AYLHBFUVR4');
 const twitterservice = new TwitterServices();
 
 const getDepartment = (dep)=>{
@@ -18,6 +21,7 @@ const getDepartment = (dep)=>{
             return Constants.DEPARTMENTS.POWER;
         break;
         case "railway":
+        case "rail":
             return Constants.DEPARTMENTS.RAIL;
         break;
     }
@@ -36,7 +40,13 @@ class JobManagerService {
         const isMedia = (fileName && fileName !="")?true:false;
 
         return new Promise((resolve, reject)=>{
-            if(isMedia && category == Constants.ENUMS.GC){
+            if(data.comMode == "qrcode" && category == Constants.ENUMS.GC){
+                twitterservice.tweet(getDepartment(data.gMetadata.department),data.description).then((response) => {
+                    return resolve({status:200,data:data});
+                }).catch((error) => {
+                    return reject({status: 400, message: "Error in tweet for text", error:error});
+                });
+            }else if(isMedia && category == Constants.ENUMS.GC){
                 const obj = new DepartmentDetectionService(this.logger);
                 obj.detectDepartment(fileName).then((response)=>{
                     if(response.data.prediction){
@@ -52,11 +62,21 @@ class JobManagerService {
                 });
             } else if(!isMedia && category == Constants.ENUMS.GC){
                 this.logger.info(`Tweet our grvience image`);
-                twitterservice.tweet(getDepartment("road"),data.description).then((response) => {
-                    return resolve({status:200,data:data});
-                }).catch((error) => {
-                    return reject({status: 400, message: "Error in tweet", error:error});
-                });
+
+                witservice.context(data.description)
+                .then(d => {
+                    console.log(d);
+                    if(d.tag == "profanity" || !d.tag)
+                        return reject({status:400, message: "Irrevilate data."});
+
+                    twitterservice.tweet(getDepartment(d.tag),data.description).then((response) => {
+                        return resolve({status:200,data:data});
+                    }).catch((error) => {
+                        return reject({status: 400, message: "Error in tweet for text", error:error});
+                    });
+                }).catch(e => {
+                    return reject({status: 400, message: "Error in tweet for text", error:error});
+                })
             }
         });
     }
