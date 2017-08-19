@@ -17,6 +17,8 @@ const constants = {
       ROAD: "road",
       GARBAGE: "garbage",
       "RAIL": "railway"
+    },
+    
     ENUMS: {
         GC: "grievances",
         UC: "uncategorized",
