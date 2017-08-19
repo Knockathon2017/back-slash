@@ -4,7 +4,7 @@ import Constants from '../utils/constants';
 import emailService from '../services/emailservice';
 import RegisterService from '../services/registerservice';
 
-import { witservice, twitterservice } from './serverboot';
+import { witservice, twitterservice, imageresize } from './serverboot';
 
 import FileUploadService from '../services/fileuploadservice';
 
@@ -159,6 +159,17 @@ module.exports.tweet = (req, res) => {
         console.log(error);
       })
 }
+
+
+module.exports.resize = (req, res) => {
+  imageresize.resize('/home/dhruv/Downloads/266509.jpg', '/home/dhruv/Downloads/2.jpg', 200, 200)
+      .then(data => {
+          console.log(data)
+      }).catch(err => {
+            console.log(err)
+      })
+}
+
 
 module.exports.getFileInfo = (req, res) => {
     const endPointName = Constants.ENDPOINTS.FILE_INFO;
