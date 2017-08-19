@@ -29,8 +29,9 @@ const getDepartment = (dep)=>{
 
 class JobManagerService {
 
-    constructor(loggerInstance) {
+    constructor(loggerInstance, emailService) {
         this.logger = loggerInstance;
+        this.emailService = emailService;
     }
 
     triggerJob(data){
@@ -41,21 +42,40 @@ class JobManagerService {
 
         return new Promise((resolve, reject)=>{
             if(data.comMode == "qrcode" && category == Constants.ENUMS.GC){
-                twitterservice.tweet(getDepartment(data.gMetadata.department),data.description).then((response) => {
-                    return resolve({status:200,data:data});
-                }).catch((error) => {
-                    return reject({status: 400, message: "Error in tweet for text", error:error});
-                });
+                
+                if(global.settings.COM_MODE == "email"){
+                    console.log(`----------------------------Send mail----------------------`);
+                    this.emailService.sendMail({
+                        subject: "Activation code",
+                        to: "eshu@yopmail.com",
+                        html: "Hello <b>"+getDepartment(data.gMetadata.department)+"</b><\br>"+data.description+".<\br><\br>Thank you for choosing us."
+                    });
+                }else{
+                    twitterservice.tweet(getDepartment(data.gMetadata.department),data.description).then((response) => {
+                        return resolve({status:200,data:data});
+                    }).catch((error) => {
+                        return reject({status: 400, message: "Error in tweet for text", error:error});
+                    });
+                }
             }else if(isMedia && category == Constants.ENUMS.GC){
                 const obj = new DepartmentDetectionService(this.logger);
                 obj.detectDepartment(fileName).then((response)=>{
                     if(response.data.prediction){
                         this.logger.info(`Tweet our grvience image`);
-                        twitterservice.tweet(getDepartment(response.data.prediction),data.description,`${global.appRoot}/file_uploaded/${fileName}`).then((response) => {
-                            return resolve({status:200,data:data});
-                        }).catch((error) => {
-                            return reject({status: 400, message: "Error in tweet", error:error});
-                        });
+                        if(global.settings.COM_MODE == "email"){
+                            console.log(`----------------------------Send mail----------------------`);
+                            this.emailService.sendMail({
+                                subject: "Activation code",
+                                to: "eshu@yopmail.com",
+                                html: "Hello <b>"+getDepartment(response.data.prediction)+"</b><\br>"+data.description+".<\br><\br>Thank you for choosing us."
+                            });
+                        }else{
+                            twitterservice.tweet(getDepartment(response.data.prediction),data.description,`${global.appRoot}/file_uploaded/${fileName}`).then((response) => {
+                                return resolve({status:200,data:data});
+                            }).catch((error) => {
+                                return reject({status: 400, message: "Error in tweet", error:error});
+                            });
+                        }
                     }
                 }).catch((error) => {
                     return reject(error);
@@ -69,11 +89,20 @@ class JobManagerService {
                     if(d.tag == "profanity" || !d.tag)
                         return reject({status:400, message: "Irrevilate data."});
 
-                    twitterservice.tweet(getDepartment(d.tag),data.description).then((response) => {
-                        return resolve({status:200,data:data});
-                    }).catch((error) => {
-                        return reject({status: 400, message: "Error in tweet for text", error:error});
-                    });
+                    if(global.settings.COM_MODE == "email"){
+                        console.log(`----------------------------Send mail----------------------`);
+                        this.emailService.sendMail({
+                            subject: "Activation code",
+                            to: "eshu@yopmail.com",
+                            html: "Hello <b>"+getDepartment(d.tag)+"</b><\br>"+data.description+".<\br><\br>Thank you for choosing us."
+                        });
+                    }else{
+                        twitterservice.tweet(getDepartment(d.tag),data.description).then((response) => {
+                            return resolve({status:200,data:data});
+                        }).catch((error) => {
+                            return reject({status: 400, message: "Error in tweet for text", error:error});
+                        });
+                    }
                 }).catch(e => {
                     return reject({status: 400, message: "Error in tweet for text", error:error});
                 })

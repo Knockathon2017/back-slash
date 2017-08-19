@@ -77,10 +77,15 @@ module.exports.gText = (req, res) => {
         tags: (data.tags && data.tags != '')?data.tags:"",
         alarm: (data.alarm && data.alarm != '')?data.alarm:"",
         time: (data.time && data.time != '')?data.time:"",
+        address: (data.address && data.address != '')?data.address:"",
+        latitude: data.gMetadata.latitude,
+        longitude: data.gMetadata.longitude,
+        locality: (data.locality && data.locality != '')?data.locality:"",
+        postalCode: (data.postalCode && data.postalCode != '')?data.postalCode:"",
         comMode: (data.comMode && data.comMode != "")?data.comMode : "",
         gMetadata: data.gMetadata
     }).then((result) => {
-        const jObj = new JobManager(req.log);
+        const jObj = new JobManager(req.log, emailService);
         jObj.triggerJob(result.data[0]).then((response)=>{
             fileUploadService.updateFileInfo(response.data,"tweeted").then((response)=>{
                 req.log.info("File info is updated.");
@@ -126,6 +131,11 @@ module.exports.uploadFile = (req, res) => {
             tags: (req.body.tags && req.body.tags != '')?req.body.tags:"",
             alarm: (req.body.alarm && req.body.alarm != '')?req.body.alarm:"",
             time: (req.body.time && req.body.time != '')?req.body.time:"",
+            address: (req.body.address && req.body.address != '')?req.body.address:"",
+            latitude: (req.body.latitude && req.body.latitude != '')?req.body.latitude:"",
+            longitude: (req.body.longitude && req.body.longitude != '')?req.body.longitude:"",
+            locality: (req.body.locality && req.body.locality != '')?req.body.locality:"",
+            postalCode: (req.body.postalCode && req.body.postalCode != '')?req.body.postalCode:""
         })
             .then((result) => {
                 const jObj = new JobManager(req.log);

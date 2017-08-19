@@ -19,22 +19,19 @@ const fileSchema = new Schema({
         type: String
     },
     latitude: {
-        type: Number
+        type: String
     },
     longitude: {
-        type: Number
-    },
-    area: {
         type: String
     },
-    city: {
+    locality: {
         type: String
     },
-    state: {
+    address: {
         type: String
     },
-    zip: {
-        type: Number
+    postalCode: {
+        type: String
     },
     description: {
         type: String

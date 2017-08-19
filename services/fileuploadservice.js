@@ -36,6 +36,12 @@ class FileUploadService {
             fileInfoObj.orignalFile = (fileName)?`${global.settings.SERVICENAME}getFile/file_uploaded/${fileName}`:"";
             fileInfoObj.comMode = (requestData.comMode)?requestData.comMode:"";
             fileInfoObj.gMetadata = requestData.gMetadata;
+            fileInfoObj.address = requestData.address;
+            fileInfoObj.latitude = requestData.latitude;
+            fileInfoObj.longitude = requestData.longitude;
+            fileInfoObj.locality = requestData.locality;
+            fileInfoObj.postalCode = requestData.postalCode;
+
             if (fileInfoObj.validateSync()) {
                 this.logger.warn(Constants.messages.FileNameNotEmpty);
                 return resolve({
