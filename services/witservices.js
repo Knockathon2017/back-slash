@@ -1,4 +1,4 @@
-
+import Constants from "../utils/constants";
 import {Wit} from 'node-wit';
 
   export default class WitService{
