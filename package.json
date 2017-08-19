@@ -24,6 +24,7 @@
     "node-twitter": "^0.5.3",
     "node-wit": "^4.3.0",
     "request-promise": "^4.2.1",
+    "twitter": "^1.7.1",
     "unirest": "^0.5.1"
   },
   "devDependencies": {

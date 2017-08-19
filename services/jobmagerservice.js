@@ -80,7 +80,7 @@ class JobManagerService {
             }
         });
     }
-    
+
 }
 
 export default JobManagerService;
