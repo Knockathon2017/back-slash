@@ -66,6 +66,16 @@ module.exports.gText = (req, res) => {
         alarm: (req.body.alarm && req.body.alarm != '')?req.body.alarm:"",
         time: (req.body.time && req.body.time != '')?req.body.time:""
     }).then((result) => {
+        const jObj = new JobManager(req.log);
+        jObj.triggerJob(result.data[0]).then((response)=>{
+            fileUploadService.updateFileInfo(response.data,"tweeted").then((response)=>{
+                req.log.info("File info is updated.");
+            }).catch((error)=>{
+                req.log.error("~~~~~~~~~~~~~~~~~error in updatetion of file info~~~~~~~~~~~~~~~~~~",{error});
+            })
+        }).catch((error) => {
+            req.log.error("~~~~~~~~~~~~~~~~~error in job triggering~~~~~~~~~~~~~~~~~~", {error});
+        })
         req.log.info('Text data inserted');
         const finalResponse = res.formatResult(result.statusCode,
             result.data, endPointName);
@@ -89,14 +99,17 @@ module.exports.uploadFile = (req, res) => {
             time: (req.body.time && req.body.time != '')?req.body.time:"",
         })
             .then((result) => {
-
-
-                new JobManager(req.log).triggerJob(result.data[0]).then((response)=>{
-                    console.log("~~~~~~~~~~~~~~~~~eshu~~~~~~~~~~~~~~~~~~");
+                const jObj = new JobManager(req.log);
+                jObj.triggerJob(result.data[0]).then((response)=>{
+                    console.log("~~~~~~~~~~~~~~~~~eshu 1~~~~~~~~~~~~~~~~~~");
+                    fileUploadService.updateFileInfo(response.data,"tweeted").then((response)=>{
+                        req.log.info("File info is updated.");
+                    }).catach((error)=>{
+                        req.log.error("~~~~~~~~~~~~~~~~~error in updatetion of file info~~~~~~~~~~~~~~~~~~");
+                    })
                 }).catch((error) => {
-                    console.log("~~~~~~~~~~~~~~~~~error~~~~~~~~~~~~~~~~~~");
+                    req.log.error("~~~~~~~~~~~~~~~~~error in job triggering~~~~~~~~~~~~~~~~~~");
                 })
-                //new DepartmentDetectionService(req.log).detectDepartment(result.data[0].fileName);
 
                 req.log.info('File uploaded');
                 const finalResponse = res.formatResult(result.statusCode,

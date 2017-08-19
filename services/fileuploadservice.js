@@ -51,6 +51,19 @@ class FileUploadService {
         });
     }
 
+    updateFileInfo(data, status){
+        return new Promise((resolve, reject) => {
+            this.logger.info('updating file info');
+            this.fileRepoObj.updateFileInfo({_id: data.id}, {status: status}).then((data) => resolve(
+                {
+                    statusCode: 200,
+                    data: data
+                })).catch((error) => {
+                return reject(error);
+            });
+        });
+    }
+
     getFileInfo(obj) {
         let queryData = {};
         let queryArray = [];
