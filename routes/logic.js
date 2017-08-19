@@ -57,14 +57,28 @@ module.exports.registerUser = (request, response) => {
 
 module.exports.gText = (req, res) => {
     req.log.info(`Get text data.`);
+    const data = req.body;
+    if(data.type == "qrcode"){
+        data.comMode = "qrcode";
+        data.category = Constants.ENUMS.GC;
+        data.gMetadata = (data.metadata)?JSON.parse(data.metadata):{};
+        //data.gMetadata = data.metadata;
+        data.description = `Consern person item id ${data.gMetadata.id} have some issue.`;
+    }else if(data.category == Constants.ENUMS.GC){
+        data.comMode = "tweet"
+    }
+
+
     const endPointName = Constants.ENDPOINTS.TEXT_UPLOAD;
     const fileUploadService = new FileUploadService(req.log);
     fileUploadService.insertFileInfo({
-        category:(req.body.category && req.body.category != '')?req.body.category:"",
-        description: (req.body.description && req.body.description != '')?req.body.description:"",
-        tags: (req.body.tags && req.body.tags != '')?req.body.tags:"",
-        alarm: (req.body.alarm && req.body.alarm != '')?req.body.alarm:"",
-        time: (req.body.time && req.body.time != '')?req.body.time:""
+        category:(data.category && data.category != '')?data.category:"",
+        description: (data.description && data.description != '')?data.description:"",
+        tags: (data.tags && data.tags != '')?data.tags:"",
+        alarm: (data.alarm && data.alarm != '')?data.alarm:"",
+        time: (data.time && data.time != '')?data.time:"",
+        comMode: (data.comMode && data.comMode != "")?data.comMode : "",
+        gMetadata: data.gMetadata
     }).then((result) => {
         const jObj = new JobManager(req.log);
         jObj.triggerJob(result.data[0]).then((response)=>{

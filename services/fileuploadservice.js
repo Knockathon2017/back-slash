@@ -34,6 +34,8 @@ class FileUploadService {
             fileInfoObj.time = requestData.time;
             fileInfoObj.thumbnail = (fileName)?"http://www.makeathumbnail.com/thumbnails/image590053.jpg":"";
             fileInfoObj.orignalFile = (fileName)?`${global.settings.SERVICENAME}getFile/${fileName}`:"";
+            fileInfoObj.comMode = (requestData.comMode)?requestData.comMode:"";
+            fileInfoObj.gMetadata = requestData.gMetadata;
             if (fileInfoObj.validateSync()) {
                 this.logger.warn(Constants.messages.FileNameNotEmpty);
                 return resolve({
