@@ -152,7 +152,7 @@ module.exports.wit = (req, res) => {
 }
 
 module.exports.tweet = (req, res) => {
-  twitterservice.tweet(Constants.DEPARTMENTS.ROAD,"Testing")
+  twitterservice.tweet(Constants.DEPARTMENTS.ROAD,"Testiccng")
       .then(result => {
         console.log(result);
       }).catch(error => {

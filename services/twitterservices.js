@@ -15,7 +15,7 @@ export default class TwitterServices {
     if (department == Constants.DEPARTMENTS.ROAD) {
       status = "@RoadsDept "+ tweet;
     } else if (department == Constants.DEPARTMENTS.GARBAGE) {
-      status = "@RoadsDept "+ tweet
+        status = "@GarbageDept "+ tweet
     } else if (department == Constants.DEPARTMENTS.RAIL) {
       status = "@ElectricityDept "+ tweet
     }
@@ -26,11 +26,11 @@ export default class TwitterServices {
     return new Promise((resolve, reject) => {
         this.twitterRestClient.statusesUpdateWithMedia(dp, function(error, result) {
           if (error) {
-            return reject(error);
+            reject(error);
           }
 
           if (result) {
-            return resolve(result);
+            resolve(result);
           }
         })
       });
@@ -38,14 +38,14 @@ export default class TwitterServices {
       return new Promise((resolve, reject) => {
         this.twitterRestClient.statusesUpdate(dp, function(error, result){
           if (error) {
-            return reject(error);
+            reject(error);
           }
 
           if (result) {
-            return resolve(result);
+            resolve(result);
           }
         });
-        
+
       })
     }
 
@@ -61,7 +61,7 @@ export default class TwitterServices {
         }
       } else {
         return {
-          status: status
+          'status': status
         }
       }
     }
