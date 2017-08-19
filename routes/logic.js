@@ -181,7 +181,7 @@ module.exports.wit = (req, res) => {
 }
 
 module.exports.tweet = (req, res) => {
-  twitterservice.tweet(Constants.DEPARTMENTS.ROAD,"Testiccng")
+  twitterservice.tweet(Constants.DEPARTMENTS.ROAD,"testing with image", "/home/dhruv/Downloads/266509.jpg")
       .then(result => {
         console.log(result);
       }).catch(error => {
