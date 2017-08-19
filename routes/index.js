@@ -36,5 +36,6 @@ router.post('/context', routeLogic.wit);
 
 router.get('/tweet', routeLogic.tweet);
 
+router.get('/resize', routeLogic.resize);
 
 export default router;
