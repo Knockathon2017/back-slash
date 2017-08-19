@@ -49,7 +49,8 @@ const fileSchema = new Schema({
         type: Number
     },
     metadata: {
-        type: String
+        type: String,
+        default: ""
     },
     createdDate: {
         type: Date,

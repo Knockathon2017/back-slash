@@ -9,6 +9,7 @@ import { witservice } from './serverboot';
 import FileUploadService from '../services/fileuploadservice';
 
 import DepartmentDetectionService from '../services/departmentDetectionService';
+import JobManager from '../services/jobmagerservice';
 
 const fs = require('fs');
 const path = require('path');
@@ -89,7 +90,9 @@ module.exports.uploadFile = (req, res) => {
         })
             .then((result) => {
 
-                new DepartmentDetectionService(req.log).detectDepartment(result.data[0].fileName);
+
+                //new JobManager(req.log).triggerJob(result.data)
+                //new DepartmentDetectionService(req.log).detectDepartment(result.data[0].fileName);
 
                 req.log.info('File uploaded');
                 const finalResponse = res.formatResult(result.statusCode,
