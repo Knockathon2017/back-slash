@@ -4,7 +4,7 @@ import Constants from '../utils/constants';
 import emailService from '../services/emailservice';
 import RegisterService from '../services/registerservice';
 
-import { witservice, twitterservice } from './serverboot';
+import { witservice, twitterservice, imageresize } from './serverboot';
 
 import FileUploadService from '../services/fileuploadservice';
 
@@ -102,6 +102,21 @@ module.exports.uploadFile = (req, res) => {
     const files = req.files;
     if(files && files.length > 0){
         const endPointName = Constants.ENDPOINTS.UPLOADFILE;
+
+        imageresize.resize(`${global.appRoot}/file_uploaded/${files[0].originalname}`, `${global.appRoot}/thumb_images/${files[0].originalname}`, 100, 100)
+        .then(data => {
+            console.log("Thumb nail created for image "+files[0].originalname);
+        }).catch(err => {
+                console.log("error in generating thumb for "+files[0].originalname);
+        })
+
+        imageresize.resize(`${global.appRoot}/file_uploaded/${files[0].originalname}`, `${global.appRoot}/detect_images/${files[0].originalname}`, 400, 400)
+        .then(data => {
+            console.log("detection image created for image "+files[0].originalname);
+        }).catch(err => {
+                console.log("detection image error for image "+files[0].originalname);
+        })
+
         const fileUploadService = new FileUploadService(req.log);
         const category = getCategory((req.body.category && req.body.category != '')?req.body.category:"");
         fileUploadService.insertFileInfo({
@@ -119,10 +134,10 @@ module.exports.uploadFile = (req, res) => {
                     fileUploadService.updateFileInfo(response.data,"tweeted").then((response)=>{
                         req.log.info("File info is updated.");
                     }).catach((error)=>{
-                        req.log.error("~~~~~~~~~~~~~~~~~error in updatetion of file info~~~~~~~~~~~~~~~~~~");
+                        req.log.error("~~~~~~~~~~~~~~~~~error in updatetion of file info~~~~~~~~~~~~~~~~~~",{error});
                     })
                 }).catch((error) => {
-                    req.log.error("~~~~~~~~~~~~~~~~~error in job triggering~~~~~~~~~~~~~~~~~~");
+                    req.log.error("~~~~~~~~~~~~~~~~~error in job triggering~~~~~~~~~~~~~~~~~~",{error});
                 })
 
                 req.log.info('File uploaded');
@@ -139,7 +154,7 @@ module.exports.uploadFile = (req, res) => {
 }
 
 module.exports.getFile = (req, res) => {
-    var file = `${global.appRoot}/file_uploaded/${req.params.fileName}.${req.params.filextn}`;
+    var file = `${global.appRoot}/${req.params.folder}/${req.params.fileName}.${req.params.filextn}`;
     var filename = path.basename(file);
     var mimetype = mime.lookup(file);
 
@@ -173,6 +188,17 @@ module.exports.tweet = (req, res) => {
         console.log(error);
       })
 }
+
+
+module.exports.resize = (req, res) => {
+  imageresize.resize('/home/dhruv/Downloads/266509.jpg', '/home/dhruv/Downloads/2.jpg', 200, 200)
+      .then(data => {
+          console.log(data)
+      }).catch(err => {
+            console.log(err)
+      })
+}
+
 
 module.exports.getFileInfo = (req, res) => {
     const endPointName = Constants.ENDPOINTS.FILE_INFO;
