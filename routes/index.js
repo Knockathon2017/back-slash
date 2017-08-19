@@ -31,4 +31,7 @@ router.get('/getFileInfo', routeLogic.getFileInfo);
 
 router.post('/context', routeLogic.wit);
 
+router.get('/tweet', routeLogic.tweet);
+
+
 export default router;

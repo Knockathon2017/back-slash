@@ -4,7 +4,7 @@ import Constants from '../utils/constants';
 import emailService from '../services/emailservice';
 import RegisterService from '../services/registerservice';
 
-import { witservice } from './serverboot';
+import { witservice, twitterservice } from './serverboot';
 
 import FileUploadService from '../services/fileuploadservice';
 
@@ -84,6 +84,15 @@ module.exports.wit = (req, res) => {
     }).catch(e => {
       console.error(e);
     })
+}
+
+module.exports.tweet = (req, res) => {
+  twitterservice.tweet(Constants.DEPARTMENTS.ROAD,"Testing")
+      .then(result => {
+        console.log(result);
+      }).catch(error => {
+        console.log(error);
+      })
 }
 
 module.exports.getFileInfo = (req, res) => {
