@@ -16,7 +16,8 @@ const constants = {
     DEPARTMENTS : {
       ROAD: "road",
       GARBAGE: "garbage",
-      "RAIL": "railway"
+      RAIL: "railway",
+      POWER: "power"
     },
     
     ENUMS: {

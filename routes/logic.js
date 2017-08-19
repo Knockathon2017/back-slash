@@ -91,7 +91,11 @@ module.exports.uploadFile = (req, res) => {
             .then((result) => {
 
 
-                //new JobManager(req.log).triggerJob(result.data)
+                new JobManager(req.log).triggerJob(result.data[0]).then((response)=>{
+                    console.log("~~~~~~~~~~~~~~~~~eshu~~~~~~~~~~~~~~~~~~");
+                }).catch((error) => {
+                    console.log("~~~~~~~~~~~~~~~~~error~~~~~~~~~~~~~~~~~~");
+                })
                 //new DepartmentDetectionService(req.log).detectDepartment(result.data[0].fileName);
 
                 req.log.info('File uploaded');
