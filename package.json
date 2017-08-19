@@ -24,7 +24,10 @@
     "node-twitter": "^0.5.3",
     "node-twitter-api": "^1.8.0",
     "node-wit": "^4.3.0",
-    "request-promise": "^4.2.1"
+    "request-promise": "^4.2.1",
+    "request-promise": "^4.2.1",
+    "unirest": "^0.5.1",
+    "node-wit": "^4.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

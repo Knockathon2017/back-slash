@@ -8,10 +8,28 @@ import { witservice, twitterservice } from './serverboot';
 
 import FileUploadService from '../services/fileuploadservice';
 
+import DepartmentDetectionService from '../services/departmentDetectionService';
 
 const fs = require('fs');
 const path = require('path');
 const mime = require('mime');
+
+const getCategory = (category) => {
+    switch(category){
+        case Constants.ENUMS.GC:
+         return Constants.ENUMS.GC;
+        break;
+        case Constants.ENUMS.C:
+         return "custom";
+        break;
+        case Constants.ENUMS.UC:
+         return "uc";
+        break;
+        default:
+            return category;
+        break;
+    }
+}
 
 module.exports.registerUser = (request, response) => {
     try {
@@ -36,16 +54,43 @@ module.exports.registerUser = (request, response) => {
     }
 };
 
+module.exports.gText = (req, res) => {
+    req.log.info(`Get text data.`);
+    const endPointName = Constants.ENDPOINTS.TEXT_UPLOAD;
+    const fileUploadService = new FileUploadService(req.log);
+    fileUploadService.insertFileInfo({
+        category:(req.body.category && req.body.category != '')?req.body.category:"",
+        description: (req.body.description && req.body.description != '')?req.body.description:"",
+        tags: (req.body.tags && req.body.tags != '')?req.body.tags:"",
+        alarm: (req.body.alarm && req.body.alarm != '')?req.body.alarm:"",
+        time: (req.body.time && req.body.time != '')?req.body.time:""
+    }).then((result) => {
+        req.log.info('Text data inserted');
+        const finalResponse = res.formatResult(result.statusCode,
+            result.data, endPointName);
+        req.log.info('record inserted successfully');
+        return res.status(finalResponse.status).json(finalResponse);
+    }).catch((err) => Util.logAndSendErrorResponse(req, res, err, endPointName));
+}
+
 module.exports.uploadFile = (req, res) => {
     const files = req.files;
     if(files && files.length > 0){
         const endPointName = Constants.ENDPOINTS.UPLOADFILE;
         const fileUploadService = new FileUploadService(req.log);
+        const category = getCategory((req.body.category && req.body.category != '')?req.body.category:"");
         fileUploadService.insertFileInfo({
             fileName: files[0].originalname, mimeType: files[0].mimetype,
-            category:(req.body.category && req.body.category != '')?req.body.category:""
+            category: category,
+            description: (req.body.description && req.body.description != '')?req.body.description:"",
+            tags: (req.body.tags && req.body.tags != '')?req.body.tags:"",
+            alarm: (req.body.alarm && req.body.alarm != '')?req.body.alarm:"",
+            time: (req.body.time && req.body.time != '')?req.body.time:"",
         })
             .then((result) => {
+
+                new DepartmentDetectionService(req.log).detectDepartment(result.data[0].fileName);
+
                 req.log.info('File uploaded');
                 const finalResponse = res.formatResult(result.statusCode,
                     result.data, endPointName);
@@ -98,11 +143,23 @@ module.exports.tweet = (req, res) => {
 module.exports.getFileInfo = (req, res) => {
     const endPointName = Constants.ENDPOINTS.FILE_INFO;
     const fileUploadService = new FileUploadService(req.log);
-    fileUploadService.getFileInfo({fileName: req.query.fileName, category:req.query.category})
+    const category = getCategory((req.query.category && req.query.category != '')?req.query.category:"");
+    fileUploadService.getFileInfo({
+            fileName: (req.query.fileName && req.query.fileName != '')?req.query.fileName:"",
+            category:category
+        })
         .then((result) => {
             const finalResponse = res.formatResult(result.statusCode,
                 result.data, endPointName);
             req.log.info('record fetched successfully');
             return res.status(finalResponse.status).json(finalResponse);
         }).catch((err) => Util.logAndSendErrorResponse(req, res, err, endPointName));
+}
+
+module.exports.detect = (req,res) => {
+    new DepartmentDetectionService(req.log).detectDepartment().then((response)=>{
+        console.log(response);
+    }).catch((error)=>{
+        console.log("error----------------------------")
+    });
 }

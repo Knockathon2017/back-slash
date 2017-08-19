@@ -22,12 +22,15 @@ var upload = multer({ storage: storage })
 
 router.post('/register', routeLogic.registerUser);
 
+router.post('/gText', upload.any(), routeLogic.gText);
+
 router.post('/uploadFile', upload.any(), routeLogic.uploadFile);
 
 router.get('/getFile/:fileName.:filextn',routeLogic.getFile);
 
 router.get('/getFileInfo', routeLogic.getFileInfo);
 
+router.get('/detect', routeLogic.detect);
 
 router.post('/context', routeLogic.wit);
 

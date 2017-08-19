@@ -3,7 +3,8 @@ const constants = {
     {
         REGISTER: 'Register',
         UPLOADFILE: 'UploadFile',
-        FILE_INFO: 'FileInfo'
+        FILE_INFO: 'FileInfo',
+        TEXT_UPLOAD: "TextUpload"
     },
 
     messages: {
@@ -16,6 +17,10 @@ const constants = {
       ROAD: "road",
       GARBAGE: "garbage",
       "RAIL": "railway"
+    ENUMS: {
+        GC: "grievances",
+        UC: "uncategorized",
+        C: "categorized"
     }
 
 
