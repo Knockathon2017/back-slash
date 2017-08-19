@@ -26,11 +26,11 @@ export default class TwitterServices {
     return new Promise((resolve, reject) => {
         this.twitterRestClient.statusesUpdateWithMedia(dp, function(error, result) {
           if (error) {
-            reject(error);
+            return reject(error);
           }
 
           if (result) {
-            resolve(result);
+            return resolve(result);
           }
         })
       });
@@ -38,11 +38,11 @@ export default class TwitterServices {
       return new Promise((resolve, reject) => {
         this.twitterRestClient.statusesUpdate(dp, function(error, result){
           if (error) {
-            reject(error);
+            return reject(error);
           }
 
           if (result) {
-            resolve(result);
+            return resolve(result);
           }
         });
         

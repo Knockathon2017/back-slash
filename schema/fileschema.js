@@ -52,6 +52,10 @@ const fileSchema = new Schema({
         type: String,
         default: ""
     },
+    status: {
+        type: String,
+        default: "inprogress"
+    },
     createdDate: {
         type: Date,
         default: Date.now
