@@ -34,4 +34,7 @@ router.get('/detect', routeLogic.detect);
 
 router.post('/context', routeLogic.wit);
 
+router.get('/tweet', routeLogic.tweet);
+
+
 export default router;

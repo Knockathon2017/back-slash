@@ -13,11 +13,17 @@ const constants = {
         FileNameNotEmpty: "File is required."
     },
 
+    DEPARTMENTS : {
+      ROAD: "road",
+      GARBAGE: "garbage",
+      "RAIL": "railway"
     ENUMS: {
         GC: "grievances",
         UC: "uncategorized",
         C: "categorized"
     }
+
+
 };
 
 export default constants;
