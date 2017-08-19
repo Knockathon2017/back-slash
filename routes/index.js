@@ -26,7 +26,7 @@ router.post('/gText', upload.any(), routeLogic.gText);
 
 router.post('/uploadFile', upload.any(), routeLogic.uploadFile);
 
-router.get('/getFile/:fileName.:filextn',routeLogic.getFile);
+router.get('/getFile/:folder/:fileName.:filextn',routeLogic.getFile);
 
 router.get('/getFileInfo', routeLogic.getFileInfo);
 
