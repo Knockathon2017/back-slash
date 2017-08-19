@@ -18,7 +18,7 @@ class DepartmentService {
         return new Promise((resolve, reject)=>{
             unirest.post(`http://cl-api.vize.ai/${global.settings.TASKID}`)
             .header("Authorization", `JWT ${global.settings.JWT}`)
-            .attach("image", fs.createReadStream(`${global.appRoot}/file_uploaded/15humsafar-express3.jpg`))
+            .attach("image", fs.createReadStream(`${global.appRoot}/file_uploaded/${fileName}`))
             .end(function (result) {
                 resolve({status: result.status, data: result.body});
             });

@@ -24,13 +24,16 @@ class FileUploadService {
 
             this.logger.info('preparing db model for file info insert');
             const fileInfoObj = new FileInfoModel();
-            fileInfoObj.fileName = (requestData.fileName && requestData.fileName != "")? requestData.fileName:"";
+            const fileName = (requestData.fileName && requestData.fileName != "")? requestData.fileName:"";
+            fileInfoObj.fileName = fileName;
             fileInfoObj.mimeType = (requestData.mimeType && requestData.mimeType != "")?requestData.mimeType:"";
             fileInfoObj.category = requestData.category;
             fileInfoObj.description = requestData.description;
             fileInfoObj.tags = requestData.tags;
             fileInfoObj.alarm = requestData.alarm;
             fileInfoObj.time = requestData.time;
+            fileInfoObj.thumbnail = (fileName)?"http://www.makeathumbnail.com/thumbnails/image590053.jpg":"";
+            fileInfoObj.orignalFile = (fileName)?`${global.settings.SERVICENAME}getFile/${fileName}`:"";
             if (fileInfoObj.validateSync()) {
                 this.logger.warn(Constants.messages.FileNameNotEmpty);
                 return resolve({
@@ -55,7 +58,7 @@ class FileUploadService {
             if(obj[item]){
                 let temp = {};
                 if(item == "category"){
-                    if(obj[item] == Constants.ENUMS.C){
+                    if(obj[item] == "custom"){
                         const temp2 = {};
                         temp2[item] = {$ne : ""};
                         queryArray.push(temp2);
